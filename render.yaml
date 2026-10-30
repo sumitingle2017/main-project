@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: shreeom-bhel
+    runtime: python
+    rootDir: shreeom_bhel/shreeom
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn shreeom.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: host
+        sync: false
+      - key: port
+        value: "5432"
+      - key: database
+        value: "postgres"
+      - key: user
+        sync: false
+      - key: password
+        sync: false

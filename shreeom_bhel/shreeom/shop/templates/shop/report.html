@@ -1,0 +1,44 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<div class="row">
+  <h2>📊 Daily Report — {{ day|date:"d M Y" }}</h2>
+  <form method="get" class="search" style="margin:0">
+    <input type="date" name="date" value="{{ day|date:'Y-m-d' }}">
+    <button class="btn">Show</button>
+  </form>
+</div>
+
+<div class="grid" style="margin:14px 0">
+  <div class="card"><p class="muted">Total Orders</p><h2>{{ summary.count }}</h2></div>
+  <div class="card"><p class="muted">Total Sale</p><h2>₹{{ summary.total|default:0|floatformat:"-2" }}</h2></div>
+  <div class="card"><p class="muted">Cash ({{ cash.count }} orders)</p><h3>₹{{ cash.total|default:0|floatformat:"-2" }}</h3></div>
+  <div class="card"><p class="muted">Online ({{ online.count }} orders)</p><h3>₹{{ online.total|default:0|floatformat:"-2" }}</h3></div>
+</div>
+
+<h3>Orders</h3>
+<div class="tbl"><table>
+<tr><th>#</th><th>Time</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th></th></tr>
+{% for o in orders %}<tr>
+<td>{{ o.id }}</td><td>{{ o.created|time:"h:i A" }}</td><td>{{ o.customer_name }}</td>
+<td>{% for i in o.items.all %}{{ i.qty }} x {{ i.name }}<br>{% endfor %}</td>
+<td>₹{{ o.total|floatformat:"-2" }}</td>
+<td>{{ o.get_payment_method_display }} / {{ o.get_payment_status_display }}</td>
+<td style="white-space:nowrap"><a href="{% url 'bill' o.id %}" target="_blank">Print</a> |<a href="{% url 'order_edit' o.id %}">Edit</a>
+<form method="post" action="{% url 'order_delete' o.id %}" style="display:inline" onsubmit="return confirm('Order #{{ o.id }} delete karaycha?')">{% csrf_token %}<button class="link" style="color:#c0392b">Delete</button></form></td>
+</tr>{% empty %}<tr><td colspan="7">Ya divshi order nahi.</td></tr>{% endfor %}
+</table></div>
+<p class="muted">Total madhe fakt cash ani paid online orders mojle jatat.</p>
+
+<h3>Item-wise Sale</h3>
+<div class="tbl"><table>
+<tr><th>Item</th><th>Qty</th><th>Amount</th></tr>
+{% for i in items %}<tr><td>{{ i.name }}</td><td>{{ i.total_qty }}</td><td>₹{{ i.amount|floatformat:"-2" }}</td></tr>
+{% empty %}<tr><td colspan="3">Ya divshi order nahi.</td></tr>{% endfor %}
+</table></div>
+
+<h3 style="margin-top:18px">Last 7 Days</h3>
+<div class="tbl"><table>
+<tr><th>Date</th><th>Orders</th><th>Total</th></tr>
+{% for w in week %}<tr><td><a href="?date={{ w.date|date:'Y-m-d' }}">{{ w.date|date:"d M Y" }}</a></td><td>{{ w.count }}</td><td>₹{{ w.total|floatformat:"-2" }}</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

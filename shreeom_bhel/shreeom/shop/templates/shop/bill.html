@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="mr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bill #{{ o.id }}</title>
+<style>
+  body{font-family:monospace;font-size:13px;color:#000;margin:0;padding:8px;background:#fff}
+  .bill{width:72mm;max-width:100%;margin:0 auto}
+  h2,h3,p{margin:2px 0;text-align:center}
+  hr{border:0;border-top:1px dashed #000;margin:6px 0}
+  table{width:100%;border-collapse:collapse}
+  td{padding:2px 0;vertical-align:top}.r{text-align:right}
+  .tot{font-size:16px;font-weight:bold}
+  .noprint{text-align:center;margin:12px}
+  .noprint button,.noprint a{padding:8px 16px;font-size:15px;margin:4px;cursor:pointer}
+  @page{margin:0}
+  @media print{.noprint{display:none}body{padding:0}}
+</style></head>
+<body onload="window.print()">
+<div class="bill">
+  <h2> Shree Om</h2>
+  <h3>Bhel Namkeen &amp; Farsan </h3>
+  <hr>
+  <table>
+    <tr><td>Bill No: <b>#{{ o.id }}</b></td><td class="r">{{ o.created|date:"d/m/Y" }}</td></tr>
+    <tr><td>{{ o.get_source_display }}</td><td class="r">{{ o.created|time:"h:i A" }}</td></tr>
+  </table>
+  <p style="text-align:left">Customer: {{ o.customer_name }}{% if o.phone %} ({{ o.phone }}){% endif %}</p>
+  <hr>
+  <table>
+    <tr><td><b>Item</b></td><td class="r"><b>Qty</b></td><td class="r"><b>Rate</b></td><td class="r"><b>Amt</b></td></tr>
+    {% for i in o.items.all %}
+    <tr><td>{{ i.name }}</td><td class="r">{{ i.qty }}</td><td class="r">{{ i.price|floatformat:"-2" }}</td><td class="r">{{ i.amount|floatformat:"-2" }}</td></tr>
+    {% endfor %}
+  </table>
+  <hr>
+  <table><tr class="tot"><td>TOTAL</td><td class="r">₹{{ o.total|floatformat:"-2" }}</td></tr></table>
+  <p style="text-align:left">Payment: {{ o.get_payment_method_display }} ({{ o.get_payment_status_display }})</p>
+  <hr>
+  <p>Dhanyavad! Punha ya 🙏</p>
+</div>
+<div class="noprint">
+  <button onclick="window.print()">🖨️ Print</button>
+  <a href="javascript:history.back()">Back</a>
+</div>
+</body></html>

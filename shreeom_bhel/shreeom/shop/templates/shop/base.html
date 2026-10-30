@@ -1,0 +1,13 @@
+{% load static %}<!DOCTYPE html>
+<html lang="mr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Shree Om Bhel & Namkeen{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'shop/style.css' %}"></head>
+<body>
+<header><a class="logo" href="{% url 'menu' %}"> Shree Om Bhel Namkeen &amp; Farsan </a>
+<nav>{% if user.is_staff %}<a href="{% url 'counter' %}">Counter</a><a href="{% url 'kitchen' %}">Kitchen</a><a href="{% url 'manage' %}">Menu Manage</a><a href="{% url 'report' %}">Report</a>
+<form method="post" action="{% url 'logout' %}" style="display:inline">{% csrf_token %}<button class="link">Logout</button></form>
+{% else %}<a href="{% url 'login' %}">Staff Login</a>{% endif %}</nav></header>
+<main>{% block content %}{% endblock %}</main>
+{% block scripts %}{% endblock %}
+</body></html>

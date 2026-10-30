@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}{% load static %}
+{% block content %}
+<div class="hero">
+  <h1>Shree Om Bhel <br> Namkeen<br> &amp;<br> Farsan </h1>
+  <p>Fresh Bhel • Puri • Namkeen • Chivda</p>
+  <a class="btn" href="#menu">View Menu</a>
+</div>
+
+<section id="menu">
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Menu search... (bhel, chivda)">
+<select name="cat" onchange="this.form.submit()"><option value="">All</option>
+{% for k,n in cats %}<option value="{{ k }}" {% if k == cat %}selected{% endif %}>{{ n }}</option>{% endfor %}</select>
+<button class="btn">Search</button></form>
+
+{% regroup items by get_category_display as groups %}
+<div class="chips">{% for g in groups %}<a href="#cat-{{ forloop.counter }}">{{ g.grouper }}</a>{% endfor %}</div>
+{% for g in groups %}
+<div class="catblock" id="cat-{{ forloop.counter }}">
+<h3 class="cat">{{ g.grouper }}</h3>
+<div class="grid">{% for i in g.list %}
+<div class="card"><h3>{{ i.name }}</h3><p class="muted">{{ i.description }}</p>
+<div class="row"><b>₹{{ i.price|floatformat:"-2" }}</b></div></div>{% endfor %}</div>
+</div>
+{% empty %}<p>Menu sapadla nahi.</p>{% endfor %}
+</section>
+{% endblock %}

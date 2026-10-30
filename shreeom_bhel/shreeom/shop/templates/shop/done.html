@@ -1,0 +1,10 @@
+{% extends 'shop/base.html' %}
+{% block content %}<div class="box"><h2>✅ Order #{{ o.id }} Place jhali!</h2>
+<p>Name: {{ o.customer_name }}</p>
+<ul>{% for i in o.items.all %}<li>{{ i.qty }} x {{ i.name }} — ₹{{ i.price }}</li>{% endfor %}</ul>
+<p><b>Total: ₹{{ o.total|floatformat:"-2" }}</b></p>
+<p>Payment: {{ o.get_payment_method_display }} ({{ o.get_payment_status_display }})</p>
+{% if o.payment_method == 'cash' %}<p>Counter var cash dya.</p>{% endif %}
+<a class="btn" href="{% url 'bill' o.id %}" target="_blank">🖨️ Print Bill</a>
+<a class="btn" href="{% url 'counter' %}">Navin Order</a>
+</div>{% endblock %}

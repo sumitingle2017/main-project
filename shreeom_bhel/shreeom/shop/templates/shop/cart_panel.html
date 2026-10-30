@@ -1,0 +1,11 @@
+<aside class="cart" id="cart">
+<h3>🛒 Order</h3>
+<div id="cart-list"><p class="muted">Cart empty</p></div>
+<p class="total">Total: ₹<span id="total">0</span></p>
+<input id="cname" placeholder="Customer name">
+<input id="cphone" placeholder="Mobile number" inputmode="tel">
+<div class="pay"><label><input type="radio" name="pay" value="cash" checked> Cash</label>
+<label><input type="radio" name="pay" value="online"> Online (UPI/Card)</label></div>
+<button class="btn" id="place-btn">Place Order</button>
+<p class="err" id="err"></p>{% csrf_token %}
+</aside>

@@ -1,0 +1,5 @@
+{% extends 'shop/base.html' %}{% load static %}
+{% block content %}<div class="row"><h2>👨‍🍳 Kitchen Orders</h2><button class="btn" id="sound">🔔 Sound ON karа</button></div>
+<div id="orders" class="grid"></div>{% endblock %}
+{% block scripts %}<script>const API="{% url 'kitchen_api' %}", ST="/order/";</script>{% csrf_token %}
+<script src="{% static 'shop/kitchen.js' %}"></script>{% endblock %}

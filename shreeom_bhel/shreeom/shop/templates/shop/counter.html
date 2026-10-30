@@ -1,0 +1,24 @@
+{% extends 'shop/base.html' %}{% load static %}
+{% block content %}<h2>Counter Order</h2>
+{% regroup items by get_category_display as groups %}
+<div class="layout"><section>
+<input id="filter" class="search-in" placeholder="Search menu..." oninput="filterItems(this.value)">
+{% for g in groups %}
+<div class="catblock">
+<h3 class="cat">{{ g.grouper }}</h3>
+<div class="grid">{% for i in g.list %}
+<div class="card item" data-n="{{ i.name|lower }}"><h3>{{ i.name }}</h3>
+<div class="row"><b>₹{{ i.price|floatformat:"-2" }}</b>
+<button class="btn add" data-id="{{ i.id }}" data-name="{{ i.name }}" data-price="{{ i.price|floatformat:'2' }}">Add</button></div></div>{% endfor %}</div>
+</div>{% endfor %}
+</section>
+{% include 'shop/cart_panel.html' %}</div>{% endblock %}
+{% block scripts %}<script>const PLACE_URL="{% url 'place' %}";
+function filterItems(v){
+  v=v.toLowerCase();
+  document.querySelectorAll('.item').forEach(e=>e.style.display=e.dataset.n.includes(v)?'':'none');
+  document.querySelectorAll('.catblock').forEach(b=>{
+    b.style.display=[...b.querySelectorAll('.item')].some(e=>e.style.display!=='none')?'':'none';
+  });
+}</script>
+<script src="{% static 'shop/cart.js' %}"></script>{% endblock %}

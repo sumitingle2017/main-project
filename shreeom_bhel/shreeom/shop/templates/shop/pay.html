@@ -1,0 +1,5 @@
+{% extends 'shop/base.html' %}
+{% block content %}<div class="box"><h2>Online Payment</h2>
+<p>Order #{{ o.id }} — Amount: <b>₹{{ o.total|floatformat:"-2" }}</b></p>
+<p class="muted">Yethe Razorpay/PhonePe/UPI gateway integrate karaicha ahe. Sadhya demo button ahe.</p>
+<form method="post">{% csrf_token %}<button class="btn">Pay ₹{{ o.total|floatformat:"-2" }}</button></form></div>{% endblock %}

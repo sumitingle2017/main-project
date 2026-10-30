@@ -1,0 +1,14 @@
+{% extends 'shop/base.html' %}
+{% block content %}<div class="box" style="max-width:640px"><h2>Edit Order #{{ o.id }}</h2>
+<form method="post" class="f">{% csrf_token %}
+{{ form.as_p }}
+<h3>Items</h3>
+{{ fs.management_form }}
+{% for f in fs %}
+<div class="card" style="margin-bottom:8px">{{ f.id }}{{ f.name.errors }}
+Item: {{ f.name }} Price: {{ f.price }} Qty: {{ f.qty }}
+{% if f.instance.pk %}<label>{{ f.DELETE }} Delete item</label>{% endif %}</div>
+{% endfor %}
+<p class="muted">Navin item sathi khalcha rikama row bhara.</p>
+<button class="btn">Save</button> <a href="{% url 'report' %}?date={{ o.created|date:'Y-m-d' }}">Cancel</a>
+</form></div>{% endblock %}

@@ -7,3 +7,4 @@ if [ -d "shreeom_bhel/shreeom" ]; then
 else
     exec gunicorn shreeom.wsgi:application
 fi
+
